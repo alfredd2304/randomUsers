@@ -1,12 +1,10 @@
-import 'package:http/http.dart' as http;
-import 'package:loggy/loggy.dart';
-
-import '../../../domain/entities/random_user.dart';
-
-import '../../models/random_user_json_response_model.dart';
 import 'dart:convert';
 
-import '../../models/random_user_model.dart';
+import 'package:f_local_database_sqlite_template/data/models/random_user_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:loggy/loggy.dart';
+import "../../models/random_user_json_response_model.dart";
+import '../../../domain/entities/random_user.dart';
 
 class UserRemoteDatatasource {
   Future<RandomUser> getUser() async {
@@ -27,8 +25,11 @@ class UserRemoteDatatasource {
 
       var jsonString = response.body;
 
-      return RandomUser(
-          city: '', gender: 'xx', name: '', email: '', picture: '');
+      UserRemoteModel userRemoteModel =
+          RandomUserJsonReponseModel.fromJson(json.decode(jsonString))
+              .results[0];
+
+      return RandomUserModel.fromRemote(userRemoteModel).toEntity();
     } else {
       logError("Got error code ${response.statusCode}");
     }

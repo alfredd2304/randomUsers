@@ -17,7 +17,7 @@ class MockGets with Mock implements Users {}
 class MockHomeController extends GetxService
     with Mock
     implements HomeController {
-  var _connection = true.obs;
+  final _connection = true.obs;
   @override
   Future onInit() {
     super.onInit();
@@ -31,7 +31,7 @@ class MockHomeController extends GetxService
 class MockUserController extends GetxService
     with Mock
     implements UserController {
-  var _users = <RandomUser>[].obs;
+  final _users = <RandomUser>[].obs;
   int cont = 0;
   @override
   List<RandomUser> get users => _users;

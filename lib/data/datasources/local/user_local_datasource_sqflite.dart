@@ -26,8 +26,7 @@ class UserLocalDataSource {
   Future<void> addUser(RandomUser user) async {
     print("Adding user to db");
     final db = await database;
-    //TODO
-    // aquí se debe llamar al db.insert
+    await db.insert("users", user.toMap());
   }
 
   Future<List<RandomUser>> getAllUsers() async {
@@ -36,7 +35,7 @@ class UserLocalDataSource {
     //TODO
     // aqui se debe hacer un query en la tabla users, la base de datos que retorna un List<Map<String, dynamic>> maps
 
-    List<Map<String, dynamic>> maps = <Map<String, dynamic>>[];
+    List<Map<String, dynamic>> maps = await db.query("users");
 
     return List.generate(maps.length, (i) {
       return RandomUser(
@@ -52,18 +51,20 @@ class UserLocalDataSource {
 
   Future<void> deleteUser(id) async {
     Database db = await database;
-    //TODO
-    // aquí se debe llamar al db.delete usando el where con el id  - tabla users
+    await db.delete("users", where: "id = ?", whereArgs: [id]);
   }
 
   Future<void> deleteAll() async {
     Database db = await database;
+    await db.delete("users");
     //TODO
     // aquí se debe llamar al db.delete  - tabla users
   }
 
   Future<void> updateUser(RandomUser user) async {
     Database db = await database;
+    await db
+        .update("users", user.toMap(), where: "id = ?", whereArgs: [user.id]);
     //TODO
     // aquí se debe llamar al db.update actualizando nombre y cuidad usando el where con el id  - tabla users
   }
